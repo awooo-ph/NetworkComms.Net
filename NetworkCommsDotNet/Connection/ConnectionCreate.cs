@@ -27,7 +27,7 @@ using NetworkCommsDotNet.DPSBase;
 using NetworkCommsDotNet.Tools;
 
 #if NET35 || NET4
-using NetworkCommsDotNet.Connections.Bluetooth;
+//using NetworkCommsDotNet.Connections.Bluetooth;
 #endif
 
 #if NETFX_CORE
@@ -229,8 +229,8 @@ namespace NetworkCommsDotNet.Connections
                 if (ConnectionInfo.LocalEndPoint is IPEndPoint)
                     existingLocalListeners = Connection.ExistingLocalListenEndPoints(ConnectionInfo.ConnectionType, new IPEndPoint(ConnectionInfo.LocalIPEndPoint.Address, 0));
 #if NET4 || NET35
-                else if (ConnectionInfo.LocalEndPoint is InTheHand.Net.BluetoothEndPoint)
-                    existingLocalListeners = Connection.ExistingLocalListenEndPoints(ConnectionInfo.ConnectionType, new InTheHand.Net.BluetoothEndPoint(ConnectionInfo.LocalBTEndPoint.Address, ConnectionInfo.LocalBTEndPoint.Service));
+             //   else if (ConnectionInfo.LocalEndPoint is InTheHand.Net.BluetoothEndPoint)
+              //      existingLocalListeners = Connection.ExistingLocalListenEndPoints(ConnectionInfo.ConnectionType, new InTheHand.Net.BluetoothEndPoint(ConnectionInfo.LocalBTEndPoint.Address, ConnectionInfo.LocalBTEndPoint.Service));
 #endif
 
                 //Check to see if we have a local listener for matching the local endpoint address
@@ -497,8 +497,8 @@ namespace NetworkCommsDotNet.Connections
                         if (this is IPConnection)
                             newRemoteEndPoint = new IPEndPoint(this.ConnectionInfo.RemoteIPEndPoint.Address, remoteConnectionInfo.LocalIPEndPoint.Port);
 #if NET35 || NET4
-                        else if (this is BluetoothConnection)
-                            newRemoteEndPoint = ConnectionInfo.RemoteBTEndPoint;
+                    //    else if (this is BluetoothConnection)
+                     //       newRemoteEndPoint = ConnectionInfo.RemoteBTEndPoint;
 #endif
                         else
                             throw new NotImplementedException("ConnectionSetupHandlerFinal not implemented for EndPoints of type " + this.ConnectionInfo.RemoteEndPoint.GetType());

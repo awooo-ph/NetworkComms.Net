@@ -32,9 +32,9 @@ using NetworkCommsDotNet.Connections.TCP;
 using NetworkCommsDotNet.Connections.UDP;
 
 #if NET35 || NET4
-using InTheHand.Net;
-using NetworkCommsDotNet.Connections.Bluetooth;
-using System.Linq;
+//using InTheHand.Net;
+//using NetworkCommsDotNet.Connections.Bluetooth;
+//using System.Linq;
 #elif NETFX_CORE
 using NetworkCommsDotNet.Tools.XPlatformHelper;
 #endif
@@ -152,18 +152,18 @@ namespace NetworkCommsDotNet
 #if NET35 || NET4
             //We may change the bluetooth radio mode during the program. Make sure that on comms shutdown the radios are correctly 
             //set back to their original modes.
-            if (InTheHand.Net.Bluetooth.BluetoothRadio.AllRadios.Length != 0)
-            {
-                var originalModes = InTheHand.Net.Bluetooth.BluetoothRadio.AllRadios.ToDictionary(rad => rad.LocalAddress, rad => rad.Mode);
+            //if (InTheHand.Net.Bluetooth.BluetoothRadio.AllRadios.Length != 0)
+            //{
+            //    var originalModes = InTheHand.Net.Bluetooth.BluetoothRadio.AllRadios.ToDictionary(rad => rad.LocalAddress, rad => rad.Mode);
 
-                NetworkComms.OnCommsShutdown += (sender, args) =>
-                {
-                    foreach (var radio in InTheHand.Net.Bluetooth.BluetoothRadio.AllRadios)
-                    {
-                        radio.Mode = originalModes[radio.LocalAddress];
-                    }
-                }; 
-            }
+            //    NetworkComms.OnCommsShutdown += (sender, args) =>
+            //    {
+            //        foreach (var radio in InTheHand.Net.Bluetooth.BluetoothRadio.AllRadios)
+            //        {
+            //            radio.Mode = originalModes[radio.LocalAddress];
+            //        }
+            //    }; 
+            //}
 #endif
         }
 
@@ -1528,85 +1528,85 @@ namespace NetworkCommsDotNet
                             #endregion
                         }
 #if NET35 || NET4
-                        else if (connectionTypeRemoteEndPointKeys.Count > 0 &&
-                            connectionTypeRemoteEndPointKeys[0].GetType() == typeof(BluetoothEndPoint) &&
-                            connectionType == ConnectionType.Bluetooth)
-                        {
-                            //////////////////////////////////////////////////////////////////////////
-                            //                  IMPORTANT!!!                                        //
-                            //Using BLuetoothEndPOint.HasPort to define any port. When we move away //
-                            //from 32Feet change this!!                                             //
-                            //////////////////////////////////////////////////////////////////////////
-                            BluetoothEndPoint remoteBTEndPoint = remoteEndPoint as BluetoothEndPoint;
-                            BluetoothEndPoint localBTEndPoint = localEndPoint as BluetoothEndPoint;
+                        //else if (connectionTypeRemoteEndPointKeys.Count > 0 &&
+                        //    connectionTypeRemoteEndPointKeys[0].GetType() == typeof(BluetoothEndPoint) &&
+                        //    connectionType == ConnectionType.Bluetooth)
+                        //{
+                        //    //////////////////////////////////////////////////////////////////////////
+                        //    //                  IMPORTANT!!!                                        //
+                        //    //Using BLuetoothEndPOint.HasPort to define any port. When we move away //
+                        //    //from 32Feet change this!!                                             //
+                        //    //////////////////////////////////////////////////////////////////////////
+                        //    BluetoothEndPoint remoteBTEndPoint = remoteEndPoint as BluetoothEndPoint;
+                        //    BluetoothEndPoint localBTEndPoint = localEndPoint as BluetoothEndPoint;
 
-                            #region Match Remote IPEndPoint
-                            //If the remoteEndPoint only has a port specified
-                            if (remoteBTEndPoint.Address == BluetoothAddress.None && remoteBTEndPoint.HasPort)
-                            {
-                                //If the provided IP is match any then we look for matching ports
-                                foreach (BluetoothEndPoint endPoint in connectionTypeRemoteEndPointKeys)
-                                {
-                                    if (endPoint.Port == remoteBTEndPoint.Port)
-                                        matchedEndPoints.Add(endPoint, new List<EndPoint>());
-                                }
-                            }
-                            else if (remoteBTEndPoint.Address == BluetoothAddress.None && !remoteBTEndPoint.HasPort)
-                            {
-                                foreach (BluetoothEndPoint endPoint in connectionTypeRemoteEndPointKeys)
-                                    matchedEndPoints.Add(endPoint, new List<EndPoint>());
-                            }
-                            else if (remoteBTEndPoint.Address != BluetoothAddress.None && !remoteBTEndPoint.HasPort)
-                            {
-                                //If the provided IP is set but the port is 0 we aim to match the IPAddress
-                                foreach (BluetoothEndPoint endPoint in connectionTypeRemoteEndPointKeys)
-                                {
-                                    if (endPoint.Address.Equals(remoteBTEndPoint.Address))
-                                        matchedEndPoints.Add(endPoint, new List<EndPoint>());
-                                }
-                            }
-                            else
-                            {
-                                if (allConnectionsByEndPoint[currentConnectionType].ContainsKey(remoteBTEndPoint))
-                                    matchedEndPoints.Add(remoteBTEndPoint, new List<EndPoint>());
-                            }
-                            #endregion
+                        //    #region Match Remote IPEndPoint
+                        //    //If the remoteEndPoint only has a port specified
+                        //    if (remoteBTEndPoint.Address == BluetoothAddress.None && remoteBTEndPoint.HasPort)
+                        //    {
+                        //        //If the provided IP is match any then we look for matching ports
+                        //        foreach (BluetoothEndPoint endPoint in connectionTypeRemoteEndPointKeys)
+                        //        {
+                        //            if (endPoint.Port == remoteBTEndPoint.Port)
+                        //                matchedEndPoints.Add(endPoint, new List<EndPoint>());
+                        //        }
+                        //    }
+                        //    else if (remoteBTEndPoint.Address == BluetoothAddress.None && !remoteBTEndPoint.HasPort)
+                        //    {
+                        //        foreach (BluetoothEndPoint endPoint in connectionTypeRemoteEndPointKeys)
+                        //            matchedEndPoints.Add(endPoint, new List<EndPoint>());
+                        //    }
+                        //    else if (remoteBTEndPoint.Address != BluetoothAddress.None && !remoteBTEndPoint.HasPort)
+                        //    {
+                        //        //If the provided IP is set but the port is 0 we aim to match the IPAddress
+                        //        foreach (BluetoothEndPoint endPoint in connectionTypeRemoteEndPointKeys)
+                        //        {
+                        //            if (endPoint.Address.Equals(remoteBTEndPoint.Address))
+                        //                matchedEndPoints.Add(endPoint, new List<EndPoint>());
+                        //        }
+                        //    }
+                        //    else
+                        //    {
+                        //        if (allConnectionsByEndPoint[currentConnectionType].ContainsKey(remoteBTEndPoint))
+                        //            matchedEndPoints.Add(remoteBTEndPoint, new List<EndPoint>());
+                        //    }
+                        //    #endregion
 
-                            #region Match Local IPEndPoint
-                            foreach (KeyValuePair<EndPoint, List<EndPoint>> keyPair in matchedEndPoints)
-                            {
-                                //If the localEndPoint only has a port specified
-                                if (localBTEndPoint.Address == BluetoothAddress.None && localBTEndPoint.HasPort)
-                                {
-                                    //If the provided IP is match any then we look for matching ports
-                                    foreach (BluetoothEndPoint endPoint in allConnectionsByEndPoint[currentConnectionType][keyPair.Key].Keys)
-                                    {
-                                        if (endPoint.Port == localBTEndPoint.Port)
-                                            keyPair.Value.Add(endPoint);
-                                    }
-                                }
-                                else if (localBTEndPoint.Address == BluetoothAddress.None && !localBTEndPoint.HasPort)
-                                {
-                                    foreach (BluetoothEndPoint endPoint in allConnectionsByEndPoint[currentConnectionType][keyPair.Key].Keys)
-                                        keyPair.Value.Add(endPoint);
-                                }
-                                else if (localBTEndPoint.Address != BluetoothAddress.None && !localBTEndPoint.HasPort)
-                                {
-                                    //If the provided IP is set but the port is 0 we aim to match the IPAddress
-                                    foreach (BluetoothEndPoint endPoint in allConnectionsByEndPoint[currentConnectionType][keyPair.Key].Keys)
-                                    {
-                                        if (endPoint.Address.Equals(localBTEndPoint.Address))
-                                            keyPair.Value.Add(endPoint);
-                                    }
-                                }
-                                else
-                                {
-                                    if (allConnectionsByEndPoint[currentConnectionType][keyPair.Key].ContainsKey(localBTEndPoint))
-                                        keyPair.Value.Add(localBTEndPoint);
-                                }
-                            }
-                            #endregion
-                        }
+                        //    #region Match Local IPEndPoint
+                        //    foreach (KeyValuePair<EndPoint, List<EndPoint>> keyPair in matchedEndPoints)
+                        //    {
+                        //        //If the localEndPoint only has a port specified
+                        //        if (localBTEndPoint.Address == BluetoothAddress.None && localBTEndPoint.HasPort)
+                        //        {
+                        //            //If the provided IP is match any then we look for matching ports
+                        //            foreach (BluetoothEndPoint endPoint in allConnectionsByEndPoint[currentConnectionType][keyPair.Key].Keys)
+                        //            {
+                        //                if (endPoint.Port == localBTEndPoint.Port)
+                        //                    keyPair.Value.Add(endPoint);
+                        //            }
+                        //        }
+                        //        else if (localBTEndPoint.Address == BluetoothAddress.None && !localBTEndPoint.HasPort)
+                        //        {
+                        //            foreach (BluetoothEndPoint endPoint in allConnectionsByEndPoint[currentConnectionType][keyPair.Key].Keys)
+                        //                keyPair.Value.Add(endPoint);
+                        //        }
+                        //        else if (localBTEndPoint.Address != BluetoothAddress.None && !localBTEndPoint.HasPort)
+                        //        {
+                        //            //If the provided IP is set but the port is 0 we aim to match the IPAddress
+                        //            foreach (BluetoothEndPoint endPoint in allConnectionsByEndPoint[currentConnectionType][keyPair.Key].Keys)
+                        //            {
+                        //                if (endPoint.Address.Equals(localBTEndPoint.Address))
+                        //                    keyPair.Value.Add(endPoint);
+                        //            }
+                        //        }
+                        //        else
+                        //        {
+                        //            if (allConnectionsByEndPoint[currentConnectionType][keyPair.Key].ContainsKey(localBTEndPoint))
+                        //                keyPair.Value.Add(localBTEndPoint);
+                        //        }
+                        //    }
+                        //    #endregion
+                        //}
 #endif
                         else if (allConnectionsByEndPoint[currentConnectionType].ContainsKey(remoteEndPoint) &&
                             allConnectionsByEndPoint[currentConnectionType][remoteEndPoint].ContainsKey(localEndPoint))

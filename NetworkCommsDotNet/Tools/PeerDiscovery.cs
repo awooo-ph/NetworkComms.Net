@@ -32,11 +32,11 @@ using NetworkCommsDotNet.Connections.TCP;
 using NetworkCommsDotNet.Connections.UDP;
 
 #if NET35 || NET4
-using InTheHand.Net.Sockets;
-using InTheHand.Net.Bluetooth;
-using InTheHand.Net;
-using InTheHand.Net.Bluetooth.AttributeIds;
-using NetworkCommsDotNet.Connections.Bluetooth;
+//using InTheHand.Net.Sockets;
+//using InTheHand.Net.Bluetooth;
+//using InTheHand.Net;
+//using InTheHand.Net.Bluetooth.AttributeIds;
+//using NetworkCommsDotNet.Connections.Bluetooth;
 #elif NETFX_CORE
 using NetworkCommsDotNet.Tools.XPlatformHelper;
 #endif
@@ -108,7 +108,7 @@ namespace NetworkCommsDotNet.Tools
             public IPEndPoint IPEndPoint { get { return EndPoint as IPEndPoint; } }
 
 #if NET35 || NET4
-            public BluetoothEndPoint BTEndPoint { get { return EndPoint as BluetoothEndPoint; } }
+           // public BluetoothEndPoint BTEndPoint { get { return EndPoint as BluetoothEndPoint; } }
 #endif
 
             public PeerListenerEndPoint(ConnectionType connectionType, EndPoint endPoint)
@@ -120,8 +120,8 @@ namespace NetworkCommsDotNet.Tools
                     throw new ArgumentException("If connection type is of an IP type then the provided endPoint must be an IPEndPoint", "endPoint");
 
 #if NET35 || NET4
-                if(connectionType == Connections.ConnectionType.Bluetooth && !(endPoint is BluetoothEndPoint))
-                    throw new ArgumentException("If connection type is Bluetooth type then the provided endPoint must be a BluetoothEndPoint", "endPoint");
+            //    if(connectionType == Connections.ConnectionType.Bluetooth && !(endPoint is BluetoothEndPoint))
+            //        throw new ArgumentException("If connection type is Bluetooth type then the provided endPoint must be a BluetoothEndPoint", "endPoint");
 #endif
 
                 this.ConnectionType = connectionType;
@@ -149,18 +149,18 @@ namespace NetworkCommsDotNet.Tools
                     Buffer.BlockCopy(port, 0, result, offset, port.Length); offset += port.Length;
                 }
 #if NET35 || NET4
-                else if (ConnectionType == Connections.ConnectionType.Bluetooth)
-                {
-                    var type = BitConverter.GetBytes((int)ConnectionType);
-                    var address = BTEndPoint.Address.ToByteArray();
-                    var port = BTEndPoint.Service.ToByteArray();
+                //else if (ConnectionType == Connections.ConnectionType.Bluetooth)
+                //{
+                //    var type = BitConverter.GetBytes((int)ConnectionType);
+                //    var address = BTEndPoint.Address.ToByteArray();
+                //    var port = BTEndPoint.Service.ToByteArray();
 
-                    int offset = 0;
-                    result = new byte[type.Length + address.Length + port.Length];
-                    Buffer.BlockCopy(type, 0, result, offset, type.Length); offset += type.Length;
-                    Buffer.BlockCopy(address, 0, result, offset, address.Length); offset += address.Length;
-                    Buffer.BlockCopy(port, 0, result, offset, port.Length); offset += port.Length;
-                }
+                //    int offset = 0;
+                //    result = new byte[type.Length + address.Length + port.Length];
+                //    Buffer.BlockCopy(type, 0, result, offset, type.Length); offset += type.Length;
+                //    Buffer.BlockCopy(address, 0, result, offset, address.Length); offset += address.Length;
+                //    Buffer.BlockCopy(port, 0, result, offset, port.Length); offset += port.Length;
+                //}
 #endif
                 else
                     throw new Exception();
@@ -184,15 +184,15 @@ namespace NetworkCommsDotNet.Tools
                     result.EndPoint = new IPEndPoint(new IPAddress(address), port);
                 }
 #if NET35 || NET4
-                else if (result.ConnectionType == ConnectionType.Bluetooth)
-                {
-                    byte[] address = new byte[8];
-                    Buffer.BlockCopy(data, offset, address, 0, address.Length); offset += address.Length;
-                    byte[] service = new byte[16];
-                    Buffer.BlockCopy(data, offset, service, 0, service.Length); offset += service.Length;
+                //else if (result.ConnectionType == ConnectionType.Bluetooth)
+                //{
+                //    byte[] address = new byte[8];
+                //    Buffer.BlockCopy(data, offset, address, 0, address.Length); offset += address.Length;
+                //    byte[] service = new byte[16];
+                //    Buffer.BlockCopy(data, offset, service, 0, service.Length); offset += service.Length;
 
-                    result.EndPoint = new BluetoothEndPoint(new BluetoothAddress(address), new Guid(service));
-                }
+                //    result.EndPoint = new BluetoothEndPoint(new BluetoothAddress(address), new Guid(service));
+                //}
 #endif
                 else
                     throw new Exception();
@@ -380,18 +380,18 @@ namespace NetworkCommsDotNet.Tools
                     _discoveryListeners.Add(discoveryMethod, listeners);
                 }
 #if NET35 || NET4
-                else if (discoveryMethod == DiscoveryMethod.BluetoothSDP)
-                {
-                    List<ConnectionListenerBase> listeners = new List<ConnectionListenerBase>();
+                //else if (discoveryMethod == DiscoveryMethod.BluetoothSDP)
+                //{
+                //    List<ConnectionListenerBase> listeners = new List<ConnectionListenerBase>();
 
-                    foreach (BluetoothRadio radio in BluetoothRadio.AllRadios)
-                    {
-                        radio.Mode = RadioMode.Discoverable;
-                        listeners.AddRange(Connection.StartListening(ConnectionType.Bluetooth, new BluetoothEndPoint(radio.LocalAddress, BluetoothDiscoveryService), true));
-                    }
+                //    foreach (BluetoothRadio radio in BluetoothRadio.AllRadios)
+                //    {
+                //        radio.Mode = RadioMode.Discoverable;
+                //        listeners.AddRange(Connection.StartListening(ConnectionType.Bluetooth, new BluetoothEndPoint(radio.LocalAddress, BluetoothDiscoveryService), true));
+                //    }
                     
-                    _discoveryListeners.Add(discoveryMethod, listeners);
-                }
+                //    _discoveryListeners.Add(discoveryMethod, listeners);
+                //}
 #endif
                 else
                     throw new NotImplementedException("The requested discovery method has not been implemented on the current platform.");
@@ -485,27 +485,27 @@ namespace NetworkCommsDotNet.Tools
                 }
             }
 #if NET35 || NET4
-            else if (discoveryMethod == DiscoveryMethod.BluetoothSDP)
-            {
-                lock (_syncRoot)
-                {
-                    foreach (BluetoothRadio radio in BluetoothRadio.AllRadios)
-                        if (radio.LocalAddress == (localDiscoveryEndPoint as BluetoothEndPoint).Address)
-                            radio.Mode = RadioMode.Discoverable;
+            //else if (discoveryMethod == DiscoveryMethod.BluetoothSDP)
+            //{
+            //    lock (_syncRoot)
+            //    {
+            //        foreach (BluetoothRadio radio in BluetoothRadio.AllRadios)
+            //            if (radio.LocalAddress == (localDiscoveryEndPoint as BluetoothEndPoint).Address)
+            //                radio.Mode = RadioMode.Discoverable;
 
-                    _discoveryListeners.Add(discoveryMethod, Connection.StartListening(ConnectionType.Bluetooth, localDiscoveryEndPoint, true));
+            //        _discoveryListeners.Add(discoveryMethod, Connection.StartListening(ConnectionType.Bluetooth, localDiscoveryEndPoint, true));
 
-                    //Add the packet handlers if required
-                    foreach (var byMethodPair in _discoveryListeners)
-                    {
-                        foreach (ConnectionListenerBase listener in byMethodPair.Value)
-                        {
-                            if (!listener.IncomingPacketHandlerExists(discoveryPacketType, new NetworkComms.PacketHandlerCallBackDelegate<byte[]>(PeerDiscoveryHandler)))
-                                listener.AppendIncomingPacketHandler<byte[]>(discoveryPacketType, PeerDiscoveryHandler);
-                        }
-                    }
-                }
-            }
+            //        //Add the packet handlers if required
+            //        foreach (var byMethodPair in _discoveryListeners)
+            //        {
+            //            foreach (ConnectionListenerBase listener in byMethodPair.Value)
+            //            {
+            //                if (!listener.IncomingPacketHandlerExists(discoveryPacketType, new NetworkComms.PacketHandlerCallBackDelegate<byte[]>(PeerDiscoveryHandler)))
+            //                    listener.AppendIncomingPacketHandler<byte[]>(discoveryPacketType, PeerDiscoveryHandler);
+            //            }
+            //        }
+            //    }
+            //}
 #endif
             else
                 throw new NotImplementedException("The requested discovery method has not been implemented on the current platform.");
@@ -533,20 +533,20 @@ namespace NetworkCommsDotNet.Tools
                 }
             }
 #if NET35 || NET4
-            else if (discoveryMethod == DiscoveryMethod.BluetoothSDP)
-            {
-                lock (_syncRoot)
-                {
-                    foreach (BluetoothRadio radio in BluetoothRadio.AllRadios)
-                        radio.Mode = RadioMode.Connectable;
+            //else if (discoveryMethod == DiscoveryMethod.BluetoothSDP)
+            //{
+            //    lock (_syncRoot)
+            //    {
+            //        foreach (BluetoothRadio radio in BluetoothRadio.AllRadios)
+            //            radio.Mode = RadioMode.Connectable;
 
-                    if (_discoveryListeners.ContainsKey(discoveryMethod))
-                    {
-                        Connection.StopListening(_discoveryListeners[discoveryMethod]);
-                        _discoveryListeners.Remove(discoveryMethod);
-                    }
-                }
-            }
+            //        if (_discoveryListeners.ContainsKey(discoveryMethod))
+            //        {
+            //            Connection.StopListening(_discoveryListeners[discoveryMethod]);
+            //            _discoveryListeners.Remove(discoveryMethod);
+            //        }
+            //    }
+            //}
 #endif
         }
 
@@ -558,8 +558,8 @@ namespace NetworkCommsDotNet.Tools
             lock (_syncRoot)
             {
 #if NET35 || NET4
-                foreach (BluetoothRadio radio in BluetoothRadio.AllRadios)
-                    radio.Mode = RadioMode.Connectable;
+             //   foreach (BluetoothRadio radio in BluetoothRadio.AllRadios)
+              //      radio.Mode = RadioMode.Connectable;
 #endif
 
                 foreach (DiscoveryMethod currentType in _discoveryListeners.Keys)
@@ -657,8 +657,8 @@ namespace NetworkCommsDotNet.Tools
                     result = DiscoverPeersTCP(discoverTimeMS);
 #endif
 #if NET35 || NET4
-                else if (discoveryMethod == DiscoveryMethod.BluetoothSDP)
-                    result = DiscoverPeersBT(discoverTimeMS);
+                //else if (discoveryMethod == DiscoveryMethod.BluetoothSDP)
+                //    result = DiscoverPeersBT(discoverTimeMS);
 #endif
                 else
                     throw new NotImplementedException("Peer discovery has not been implemented for the provided connection type.");
@@ -926,61 +926,61 @@ namespace NetworkCommsDotNet.Tools
         /// </summary>
         /// <param name="discoverTimeout"></param>
         /// <returns></returns>
-        private static Dictionary<ShortGuid, Dictionary<ConnectionType, List<EndPoint>>> DiscoverPeersBT(int discoverTimeout)
-        {
-            object locker = new object();
-            AutoResetEvent btDiscoverFinished = new AutoResetEvent(false);
+        //private static Dictionary<ShortGuid, Dictionary<ConnectionType, List<EndPoint>>> DiscoverPeersBT(int discoverTimeout)
+        //{
+        //    object locker = new object();
+        //    AutoResetEvent btDiscoverFinished = new AutoResetEvent(false);
 
-            EventHandler<DiscoverDevicesEventArgs> callBack = (sender, e) =>
-                {
-                    List<EndPoint> endPointsToSendTo = new List<EndPoint>();
+        //    EventHandler<DiscoverDevicesEventArgs> callBack = (sender, e) =>
+        //        {
+        //            List<EndPoint> endPointsToSendTo = new List<EndPoint>();
 
-                    foreach (var dev in e.Devices)
-                        foreach (var serviceRecord in dev.GetServiceRecords(BluetoothService.RFCommProtocol))
-                            if (serviceRecord.AttributeIds.Contains(BluetoothConnectionListener.NetworkCommsBTAttributeId.NetworkCommsEndPoint))
-                                endPointsToSendTo.Add(new BluetoothEndPoint(dev.DeviceAddress, serviceRecord.GetAttributeById(UniversalAttributeId.ServiceClassIdList).Value.GetValueAsElementList()[0].GetValueAsUuid()));
+        //            foreach (var dev in e.Devices)
+        //                foreach (var serviceRecord in dev.GetServiceRecords(BluetoothService.RFCommProtocol))
+        //                    if (serviceRecord.AttributeIds.Contains(BluetoothConnectionListener.NetworkCommsBTAttributeId.NetworkCommsEndPoint))
+        //                        endPointsToSendTo.Add(new BluetoothEndPoint(dev.DeviceAddress, serviceRecord.GetAttributeById(UniversalAttributeId.ServiceClassIdList).Value.GetValueAsElementList()[0].GetValueAsUuid()));
                     
-                    using (Packet sendPacket = new Packet(discoveryPacketType, new byte[0], NetworkComms.DefaultSendReceiveOptions))
-                    {
-                        foreach (var remoteEndPoint in endPointsToSendTo)
-                        {
-                            var connection = BluetoothConnection.GetConnection(new ConnectionInfo(remoteEndPoint));
-                            connection.SendPacket<byte[]>(sendPacket);
-                        }
-                    }
+        //            using (Packet sendPacket = new Packet(discoveryPacketType, new byte[0], NetworkComms.DefaultSendReceiveOptions))
+        //            {
+        //                foreach (var remoteEndPoint in endPointsToSendTo)
+        //                {
+        //                    var connection = BluetoothConnection.GetConnection(new ConnectionInfo(remoteEndPoint));
+        //                    connection.SendPacket<byte[]>(sendPacket);
+        //                }
+        //            }
 
-                    btDiscoverFinished.Set();
-                };
+        //            btDiscoverFinished.Set();
+        //        };
 
-            BluetoothComponent com = new InTheHand.Net.Bluetooth.BluetoothComponent();
-            com.DiscoverDevicesComplete += callBack;            
-            com.DiscoverDevicesAsync(255, false, false, false, true, com);
+        //    BluetoothComponent com = new InTheHand.Net.Bluetooth.BluetoothComponent();
+        //    com.DiscoverDevicesComplete += callBack;            
+        //    com.DiscoverDevicesAsync(255, false, false, false, true, com);
 
-            btDiscoverFinished.WaitOne();
-            Thread.Sleep(discoverTimeout);
+        //    btDiscoverFinished.WaitOne();
+        //    Thread.Sleep(discoverTimeout);
 
-            Dictionary<ShortGuid, Dictionary<ConnectionType, List<EndPoint>>> result = new Dictionary<ShortGuid, Dictionary<ConnectionType, List<EndPoint>>>();
-            lock (_syncRoot)
-            {
-                foreach (var idPair in _discoveredPeers)
-                {
-                    if(!result.ContainsKey(idPair.Key))
-                        result.Add(idPair.Key, new Dictionary<ConnectionType,List<EndPoint>>());
+        //    Dictionary<ShortGuid, Dictionary<ConnectionType, List<EndPoint>>> result = new Dictionary<ShortGuid, Dictionary<ConnectionType, List<EndPoint>>>();
+        //    lock (_syncRoot)
+        //    {
+        //        foreach (var idPair in _discoveredPeers)
+        //        {
+        //            if(!result.ContainsKey(idPair.Key))
+        //                result.Add(idPair.Key, new Dictionary<ConnectionType,List<EndPoint>>());
 
-                    foreach(var typePair in idPair.Value)
-                    {
-                        if(!result[idPair.Key].ContainsKey(typePair.Key))
-                            result[idPair.Key].Add(typePair.Key, new List<EndPoint>());
+        //            foreach(var typePair in idPair.Value)
+        //            {
+        //                if(!result[idPair.Key].ContainsKey(typePair.Key))
+        //                    result[idPair.Key].Add(typePair.Key, new List<EndPoint>());
 
-                        foreach(var endPoint in typePair.Value)
-                            if(!result[idPair.Key][typePair.Key].Contains(endPoint.Key))
-                                result[idPair.Key][typePair.Key].Add(endPoint.Key);
-                    }
-                }
-            }
+        //                foreach(var endPoint in typePair.Value)
+        //                    if(!result[idPair.Key][typePair.Key].Contains(endPoint.Key))
+        //                        result[idPair.Key][typePair.Key].Add(endPoint.Key);
+        //            }
+        //        }
+        //    }
 
-            return result;
-        }     
+        //    return result;
+        //}     
 #endif
         #endregion
 

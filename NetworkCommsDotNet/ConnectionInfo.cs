@@ -33,8 +33,8 @@ using System.Net.Sockets;
 #endif
 
 #if NET4 || NET35
-using InTheHand.Net;
-using InTheHand.Net.Bluetooth;
+//using InTheHand.Net;
+//using InTheHand.Net.Bluetooth;
 #endif
 
 #if ANDROID
@@ -213,38 +213,38 @@ namespace NetworkCommsDotNet
         /// <summary>
         /// The localEndPoint cast as <see cref="IPEndPoint"/>.
         /// </summary>
-        internal BluetoothEndPoint LocalBTEndPoint
-        {
-            get
-            {
-                try
-                {
-                    return (BluetoothEndPoint)LocalEndPoint;
-                }
-                catch (InvalidCastException ex)
-                {
-                    throw new InvalidCastException("Unable to cast LocalEndPoint to IPEndPoint.", ex);
-                }
-            }
-        }
+        //internal BluetoothEndPoint LocalBTEndPoint
+        //{
+        //    get
+        //    {
+        //        try
+        //        {
+        //            return (BluetoothEndPoint)LocalEndPoint;
+        //        }
+        //        catch (InvalidCastException ex)
+        //        {
+        //            throw new InvalidCastException("Unable to cast LocalEndPoint to IPEndPoint.", ex);
+        //        }
+        //    }
+        //}
 
-        /// <summary>
-        /// The remoteEndPoint cast as <see cref="IPEndPoint"/>.
-        /// </summary>
-        internal BluetoothEndPoint RemoteBTEndPoint
-        {
-            get
-            {
-                try
-                {
-                    return (BluetoothEndPoint)RemoteEndPoint;
-                }
-                catch (InvalidCastException ex)
-                {
-                    throw new InvalidCastException("Unable to cast LocalEndPoint to IPEndPoint.", ex);
-                }
-            }
-        }
+        ///// <summary>
+        ///// The remoteEndPoint cast as <see cref="IPEndPoint"/>.
+        ///// </summary>
+        //internal BluetoothEndPoint RemoteBTEndPoint
+        //{
+        //    get
+        //    {
+        //        try
+        //        {
+        //            return (BluetoothEndPoint)RemoteEndPoint;
+        //        }
+        //        catch (InvalidCastException ex)
+        //        {
+        //            throw new InvalidCastException("Unable to cast LocalEndPoint to IPEndPoint.", ex);
+        //        }
+        //    }
+        //}
 #endif
 
         #endregion
@@ -275,9 +275,9 @@ namespace NetworkCommsDotNet
                     this.LocalEndPoint = new IPEndPoint(IPAddress.IPv6Any, 0);
                     break;
 #if NET4 || NET35
-                case (AddressFamily)32:
-                    this.LocalEndPoint = new BluetoothEndPoint(BluetoothAddress.None, BluetoothService.SerialPort);
-                    break;
+             //   case (AddressFamily)32:
+             //       this.LocalEndPoint = new BluetoothEndPoint(BluetoothAddress.None, BluetoothService.SerialPort);
+             //       break;
 #endif
             }
             
@@ -309,9 +309,9 @@ namespace NetworkCommsDotNet
                     this.LocalEndPoint = new IPEndPoint(IPAddress.IPv6Any, 0);
                     break;
 #if NET4 || NET35
-                case (AddressFamily)32:
-                    this.LocalEndPoint = new BluetoothEndPoint(BluetoothAddress.None, BluetoothService.SerialPort);
-                    break;
+             //   case (AddressFamily)32:
+             //       this.LocalEndPoint = new BluetoothEndPoint(BluetoothAddress.None, BluetoothService.SerialPort);
+             //       break;
 #endif
             }
 
@@ -345,7 +345,7 @@ namespace NetworkCommsDotNet
                     break;
 #if NET4 || NET35
                 case (AddressFamily)32:
-                    this.LocalEndPoint = new BluetoothEndPoint(BluetoothAddress.None, BluetoothService.SerialPort);
+                  //  this.LocalEndPoint = new BluetoothEndPoint(BluetoothAddress.None, BluetoothService.SerialPort);
                     break;
 #endif
             }
@@ -386,7 +386,7 @@ namespace NetworkCommsDotNet
                     break;
 #if NET4 || NET35
                 case (AddressFamily)32:
-                    this.LocalEndPoint = new BluetoothEndPoint(BluetoothAddress.None, BluetoothService.SerialPort);
+                 //   this.LocalEndPoint = new BluetoothEndPoint(BluetoothAddress.None, BluetoothService.SerialPort);
                     break;
 #endif
             }
@@ -421,7 +421,7 @@ namespace NetworkCommsDotNet
                     break;
 #if NET4 || NET35
                 case (AddressFamily)32:
-                    this.RemoteEndPoint = new BluetoothEndPoint(BluetoothAddress.None, BluetoothService.SerialPort);
+                 //   this.RemoteEndPoint = new BluetoothEndPoint(BluetoothAddress.None, BluetoothService.SerialPort);
                     break;
 #endif
             }
@@ -464,7 +464,7 @@ namespace NetworkCommsDotNet
                     break;
 #if NET4 || NET35
                 case (AddressFamily)32:
-                    this.RemoteEndPoint = new BluetoothEndPoint(BluetoothAddress.None, BluetoothService.SerialPort);
+                //    this.RemoteEndPoint = new BluetoothEndPoint(BluetoothAddress.None, BluetoothService.SerialPort);
                     break;
 #endif
             }
@@ -769,11 +769,11 @@ namespace NetworkCommsDotNet
                 }
 
 #if NET4 || NET35
-                if (LocalEndPoint as InTheHand.Net.BluetoothEndPoint != null)
-                {
-                    localEndPointAddressStr = LocalBTEndPoint.Address.ToString();
-                    localEndPointPort = LocalBTEndPoint.Port;
-                }
+              //  if (LocalEndPoint as InTheHand.Net.BluetoothEndPoint != null)
+             //   {
+             //       localEndPointAddressStr = LocalBTEndPoint.Address.ToString();
+             //       localEndPointPort = LocalBTEndPoint.Port;
+             //   }
 #endif
                 byte[] conTypeData = BitConverter.GetBytes((int)ConnectionType);
 
@@ -838,15 +838,15 @@ namespace NetworkCommsDotNet
             ApplicationLayerProtocol = (ApplicationLayerProtocolStatus)BitConverter.ToInt32(AppLayerEnabledData, 0);
             
 #if NET4 || NET35
-            if (ConnectionType == ConnectionType.Bluetooth)
-            {
-                BluetoothAddress btAddress;
-                if(!BluetoothAddress.TryParse(localEndPointAddressStr, out btAddress))
-                    throw new ArgumentException("Failed to parse BluetoothAddress from localEndPointAddressStr", "localEndPointAddressStr");
+            //if (ConnectionType == ConnectionType.Bluetooth)
+            //{
+            //    BluetoothAddress btAddress;
+            //    if(!BluetoothAddress.TryParse(localEndPointAddressStr, out btAddress))
+            //        throw new ArgumentException("Failed to parse BluetoothAddress from localEndPointAddressStr", "localEndPointAddressStr");
 
-                LocalEndPoint = new BluetoothEndPoint(btAddress, BluetoothService.SerialPort, localEndPointPort);
-                return;
-            }
+            //    LocalEndPoint = new BluetoothEndPoint(btAddress, BluetoothService.SerialPort, localEndPointPort);
+            //    return;
+            //}
 #endif
             IPAddress ipAddress;
             if (!IPAddress.TryParse(localEndPointAddressStr, out ipAddress))
