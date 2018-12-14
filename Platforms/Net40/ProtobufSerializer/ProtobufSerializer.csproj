@@ -65,7 +65,6 @@
   <ItemGroup>
     <None Include="networkcomms.net.snk" />
     <None Include="packages.config" />
-    <None Include="ProtobufSerializer.ruleset" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetworkCommsDotNet\NetworkCommsDotNet.csproj">
