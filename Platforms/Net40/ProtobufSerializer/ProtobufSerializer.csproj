@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>ProtobufSerializer.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +33,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\ProtobufSerializer.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>ProtobufSerializer.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -63,6 +65,7 @@
   <ItemGroup>
     <None Include="networkcomms.net.snk" />
     <None Include="packages.config" />
+    <None Include="ProtobufSerializer.ruleset" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetworkCommsDotNet\NetworkCommsDotNet.csproj">
