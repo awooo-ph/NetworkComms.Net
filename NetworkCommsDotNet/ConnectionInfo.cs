@@ -33,8 +33,6 @@ using System.Net.Sockets;
 #endif
 
 #if NET4 || NET35
-//using InTheHand.Net;
-//using InTheHand.Net.Bluetooth;
 #endif
 
 #if ANDROID
